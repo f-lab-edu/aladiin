@@ -1,9 +1,15 @@
-package com.aladiin.domain.member.domain;
+package com.aladiin.domain.member.domain.entity;
 
 
-import com.aladiin.domain.model.BaseTimeEntity;
+import com.aladiin.domain.coupon.domain.entity.IssuedCoupon;
+import com.aladiin.domain.member.domain.MemberStatus;
+import com.aladiin.domain.member.domain.MemberType;
+import com.aladiin.domain.common.BaseTimeEntity;
+import com.aladiin.domain.order.domain.entity.Order;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,8 +35,19 @@ public class Member extends BaseTimeEntity {
     @Column(name = "MEMBER_TYPE")
     private MemberType memberType;
 
+    @OneToMany(mappedBy = "member")
+    private List<IssuedCoupon> issuedCoupons;
+
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders;
+
     public void changeMemberStatus(MemberStatus memberStatus) {
         this.memberStatus = memberStatus;
+    }
+
+    public void addIssuedCoupon(IssuedCoupon issuedCoupon) {
+        this.issuedCoupons.add(issuedCoupon);
+
     }
 
 

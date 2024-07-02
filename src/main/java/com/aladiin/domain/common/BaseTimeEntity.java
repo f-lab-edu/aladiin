@@ -1,4 +1,4 @@
-package com.aladiin.domain.model;
+package com.aladiin.domain.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
