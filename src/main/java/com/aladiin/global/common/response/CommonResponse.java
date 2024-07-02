@@ -22,7 +22,13 @@ public class CommonResponse<D> {
         return new CommonResponse<D>("200", message, data);
     }
 
+    public static <D> CommonResponse<D> ofSuccess(D data){
+        return new CommonResponse<D>("200", null, data);
+    }
+
+
     public static <D> CommonResponse<D> ofFail(String errorCode, String message, D data){
         return new CommonResponse<D>(errorCode, message, data);
     }
+
 }
