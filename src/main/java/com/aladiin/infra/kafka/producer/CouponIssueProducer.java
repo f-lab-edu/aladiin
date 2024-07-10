@@ -1,6 +1,6 @@
 package com.aladiin.infra.kafka.producer;
 
-import com.aladiin.domain.coupon.dto.CouponIssueDTO;
+import com.aladiin.model.dto.CouponIssueDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
