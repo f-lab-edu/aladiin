@@ -5,6 +5,7 @@ import aladiin.adminapi.service.CouponService;
 import aladiin.adminapi.service.EventService;
 import aladiin.adminapi.exception.NoSuchCouponExistException;
 import aladiin.core.common.response.CommonResponse;
+import aladiin.core.domain.entity.Event;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import aladiin.core.domain.entity.Coupon;
@@ -25,7 +26,8 @@ public class EventController {
     @PostMapping("/register")
     public ResponseEntity<CommonResponse> register(@Valid @RequestBody EventRegisterRequest request) throws NoSuchCouponExistException {
         Coupon coupon = couponService.findCouponById(request.getCouponId());
-        eventService.saveEvent(request.toEntity(coupon));
+        Event event = request.toEntity(coupon);
+        eventService.saveEvent(event);
         return ResponseEntity.ok(CommonResponse.ofSuccess());
     }
 }
