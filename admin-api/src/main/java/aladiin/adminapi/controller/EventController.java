@@ -1,6 +1,6 @@
 package aladiin.adminapi.controller;
 
-import aladiin.adminapi.model.dto.EventRegisterRequest;
+import aladiin.core.request.EventRegisterRequest;
 import aladiin.adminapi.service.CouponService;
 import aladiin.adminapi.service.EventService;
 import aladiin.adminapi.exception.NoSuchCouponExistException;

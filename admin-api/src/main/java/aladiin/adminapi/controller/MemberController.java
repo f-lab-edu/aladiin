@@ -2,7 +2,7 @@ package aladiin.adminapi.controller;
 
 import aladiin.adminapi.model.dto.FindValidIssuedCouponsDTO;
 import aladiin.adminapi.model.dto.FindValidIssuedCouponsResponse;
-import aladiin.adminapi.model.dto.SignUpRequest;
+import aladiin.core.request.SignUpRequest;
 import aladiin.adminapi.service.CouponService;
 import aladiin.adminapi.service.MemberService;
 import aladiin.core.common.response.CommonResponse;

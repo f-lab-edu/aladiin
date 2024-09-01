@@ -1,4 +1,6 @@
-package aladiin.adminapi.exception;
+package aladiin.core.request;
+
+import aladiin.core.error.InvalidDiscountException;
 
 public class InvalidDiscountValueException extends InvalidDiscountException {
     private static final String message = "할인 가격이 올바르지 않습니다";

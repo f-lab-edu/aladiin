@@ -1,6 +1,6 @@
-package aladiin.adminapi.model.dto;
+package aladiin.core.request;
 
-import aladiin.adminapi.exception.InvalidDiscountException;
+import aladiin.core.error.InvalidDiscountException;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -54,6 +54,10 @@ public class CouponRegisterRequest {
             return false;
         }
         return true;
+    }
+
+    public static CouponRegisterRequest of(String couponName, String discountType, int discountValue, String validDateTime) {
+        return new CouponRegisterRequest(couponName, discountType, discountValue, validDateTime);
     }
 
     public Coupon toEntity() throws InvalidDiscountException {

@@ -1,4 +1,4 @@
-package aladiin.adminapi.exception;
+package aladiin.core.error;
 
 public class InvalidDiscountException extends Exception {
 

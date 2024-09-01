@@ -1,7 +1,7 @@
 package aladiin.adminapi.controller;
 
-import aladiin.adminapi.exception.InvalidDiscountException;
-import aladiin.adminapi.model.dto.CouponRegisterRequest;
+import aladiin.core.error.InvalidDiscountException;
+import aladiin.core.request.CouponRegisterRequest;
 import aladiin.adminapi.service.CouponService;
 import aladiin.core.common.response.CommonResponse;
 import jakarta.validation.Valid;

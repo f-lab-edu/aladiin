@@ -1,4 +1,4 @@
-package aladiin.adminapi.model.dto;
+package aladiin.core.request;
 
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
@@ -67,5 +67,9 @@ public class EventRegisterRequest {
         return Event.of(coupon, couponQuantity
                 , LocalDateTime.parse(startDatetime , DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                 , LocalDateTime.parse(endDatetime , DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+    }
+
+    public static EventRegisterRequest of(Long couponId, int couponQuantity, String startDatetime, String endDatetime) {
+        return new EventRegisterRequest(couponId, couponQuantity, startDatetime, endDatetime);
     }
 }

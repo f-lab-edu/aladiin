@@ -13,7 +13,6 @@ public class CouponStockRepository {
 
     private final RedissonClient redissonClient;
 
-
     public void save(CouponStock couponStock) {
         RAtomicLong atomicLong = redissonClient.getAtomicLong(couponStock.getKey());
         atomicLong.set(couponStock.getQuantity());
