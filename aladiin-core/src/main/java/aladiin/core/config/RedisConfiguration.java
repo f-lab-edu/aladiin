@@ -1,21 +1,20 @@
 package aladiin.core.config;
 
+import lombok.RequiredArgsConstructor;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
 @Configuration
+@RequiredArgsConstructor
 public class RedisConfiguration {
 
-
-    @Value("${spring.redis.host}")
-    private List<String> host;
+    private final RedisConfigurationProperties redisConfigurationProperties;
 
     @Bean
     public RedissonConnectionFactory redisConnectionFactory(RedissonClient redissonClient) {
@@ -26,7 +25,7 @@ public class RedisConfiguration {
     public RedissonClient RedissonClient() {
         Config config = new Config();
         config.useClusterServers()
-                .setNodeAddresses(host);
+                .setNodeAddresses(redisConfigurationProperties.getHost());
         return Redisson.create(config);
     }
 
