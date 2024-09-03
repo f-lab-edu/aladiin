@@ -1,4 +1,4 @@
-package aladiin.core.common.response;
+package aladiin.core.response;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

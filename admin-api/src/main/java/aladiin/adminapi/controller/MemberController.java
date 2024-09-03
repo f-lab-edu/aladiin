@@ -5,7 +5,7 @@ import aladiin.adminapi.model.dto.FindValidIssuedCouponsResponse;
 import aladiin.core.request.SignUpRequest;
 import aladiin.adminapi.service.CouponService;
 import aladiin.adminapi.service.MemberService;
-import aladiin.core.common.response.CommonResponse;
+import aladiin.core.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import aladiin.core.domain.entity.IssuedCoupon;

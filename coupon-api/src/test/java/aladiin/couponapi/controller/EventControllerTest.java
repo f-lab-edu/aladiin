@@ -1,6 +1,6 @@
 package aladiin.couponapi.controller;
 
-import aladiin.core.common.response.CommonResponse;
+import aladiin.core.response.CommonResponse;
 import aladiin.core.request.CouponRegisterRequest;
 import aladiin.core.request.EventRegisterRequest;
 import aladiin.core.request.SignUpRequest;

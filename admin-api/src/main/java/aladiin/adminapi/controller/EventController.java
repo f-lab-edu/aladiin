@@ -5,7 +5,7 @@ import aladiin.core.request.EventRegisterRequest;
 import aladiin.adminapi.service.CouponService;
 import aladiin.adminapi.service.EventService;
 import aladiin.adminapi.exception.NoSuchCouponExistException;
-import aladiin.core.common.response.CommonResponse;
+import aladiin.core.response.CommonResponse;
 import aladiin.core.domain.entity.Event;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

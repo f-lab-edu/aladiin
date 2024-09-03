@@ -3,7 +3,7 @@ package aladiin.adminapi.controller;
 import aladiin.core.error.InvalidDiscountException;
 import aladiin.core.request.CouponRegisterRequest;
 import aladiin.adminapi.service.CouponService;
-import aladiin.core.common.response.CommonResponse;
+import aladiin.core.response.CommonResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
