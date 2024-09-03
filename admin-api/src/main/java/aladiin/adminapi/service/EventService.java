@@ -18,21 +18,10 @@ import java.time.format.DateTimeFormatter;
 public class EventService {
 
     private final EventRepository eventRepository;
-    private final CouponStockRepository couponStockRepository;
 
     public void saveEvent(Event event) {
         eventRepository.save(event);
-        saveCouponStock(event);
     }
 
-    private void saveCouponStock(Event event) {
-        LocalDate eventDate = event.getStartDatetime().toLocalDate();
-        LocalDate endDate = event.getEndDatetime().toLocalDate();
 
-        while (eventDate.isBefore(endDate) || eventDate.isEqual(endDate)){
-            CouponStock couponStock = CouponStock.of(event, eventDate);
-            couponStockRepository.save(couponStock);
-            eventDate = eventDate.plusDays(1);
-        }
-    }
 }
