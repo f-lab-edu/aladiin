@@ -60,12 +60,15 @@ alter table issued_coupon
     foreign key (member_id)
     references member(member_id);
 
+-- 회원 등록
 insert into member (created_at, member_name, member_status, member_type, updated_at, member_id)
 values (NOW(), 'member1', 'ACTIVE', 'GENERAL', NOW(), 1);
 
+-- 쿠폰 등록
 insert into coupon (coupon_name, created_at, discount_type, discount_value, updated_at, valid_datetime, coupon_id)
 values ('coupon1', NOW(), 'RATIO', 100, NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 1);
 
+-- 이벤트 등록
 insert into event (coupon_id, coupon_quantity, end_datetime, start_datetime, event_id)
 values (1, 1, NOW(), DATE_ADD(NOW(), INTERVAL 1 MONTH), 1);
 

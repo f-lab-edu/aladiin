@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        ddl-auto: none
+        format_sql: true
+  redis:
+    host:
+      redis://127.0.0.1:7000,
+      redis://127.0.0.1:7001,
+      redis://127.0.0.1:7002
