@@ -1,10 +1,16 @@
 package aladiin.core.domain.entity;
 
-public class EventJoinMember {
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    public static String getKey(Long eventId, String eventDate, Long memberId) {
-       return "event:" + eventId
-                + "date:" + eventDate
-                + "member" + memberId;
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class EventJoinMember {
+    private String key;
+    private Long value;
+
+    public static EventJoinMember of(Long eventId, String eventDate, Long memberId) {
+        return new EventJoinMember(eventId + ":" + eventDate, memberId);
     }
 }

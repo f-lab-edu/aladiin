@@ -13,8 +13,8 @@ public class EventService {
     private final EventJoinRepository eventJoinRepository;
     public EventJoinStatus getJoinStatus(Long eventId, String eventDate, Long memberId) {
 
-        String key = EventJoinMember.getKey(eventId, eventDate, memberId);
-        boolean eventJoinStatus = eventJoinRepository.findMember(key);
+        EventJoinMember eventJoinMember = EventJoinMember.of(eventId, eventDate, memberId);
+        boolean eventJoinStatus = eventJoinRepository.findMember(eventJoinMember.getKey(), eventJoinMember.getValue());
 
         return EventJoinStatus.from(eventJoinStatus);
     }
