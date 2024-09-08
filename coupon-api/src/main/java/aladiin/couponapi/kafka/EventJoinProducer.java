@@ -4,7 +4,6 @@ import aladiin.couponapi.config.KafkaConfigurationProperties;
 import aladiin.couponapi.model.dto.EventJoinDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +17,6 @@ public class EventJoinProducer {
 
     public void produce(EventJoinDTO eventJoinDTO) {
         log.info("produce [{}] into broker [{}]", eventJoinDTO, kafkaConfigurationProperties.getBootstrapServers());
-        kafkaTemplate.send(kafkaConfigurationProperties.getTopic(), eventJoinDTO);
+        kafkaTemplate.send(kafkaConfigurationProperties.getTopic(), String.valueOf(eventJoinDTO.getMemberId()), eventJoinDTO);
     }
 }

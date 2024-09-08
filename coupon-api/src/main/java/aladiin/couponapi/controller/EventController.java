@@ -32,7 +32,7 @@ public class EventController {
 
     @PostMapping("/join")
     public ResponseEntity<CommonResponse> join(@Valid @RequestBody EventJoinRequest request){
-        eventJoinProducer.produce(EventJoinDTO.of(request.getUserId(), request.getEventId(), request.getEventDate()));
+        eventJoinProducer.produce(EventJoinDTO.of(request.getMemberId(), request.getEventId(), request.getEventDate()));
         return ResponseEntity.ok(CommonResponse.ofSuccess());
     }
 }
