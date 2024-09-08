@@ -1,4 +1,4 @@
-package aladiin.core.config;
+package aladiin.adminapi.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Profile("!test")
+@Profile("test")
 @Getter @Setter
 @Component
 @ConfigurationProperties(prefix = "spring.redis")

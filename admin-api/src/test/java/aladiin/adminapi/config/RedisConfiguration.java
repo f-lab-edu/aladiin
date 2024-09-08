@@ -1,6 +1,5 @@
 package aladiin.adminapi.config;
 
-import aladiin.core.config.RedisConfigurationProperties;
 import lombok.RequiredArgsConstructor;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -10,9 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-@Profile("test")
 @Configuration
 @RequiredArgsConstructor
+@Profile("test")
 public class RedisConfiguration {
 
     private final RedisConfigurationProperties redisConfigurationProperties;

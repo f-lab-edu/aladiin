@@ -1,6 +1,5 @@
 package aladiin.couponapi.config;
 
-import aladiin.core.config.RedisConfigurationProperties;
 import lombok.RequiredArgsConstructor;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
