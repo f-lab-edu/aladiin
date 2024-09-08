@@ -7,7 +7,10 @@ spring:
       port: 6379
   kafka:
     topic: event.join
-    bootstrap-servers: localhost:9092
+    bootstrap-servers:
+      localhost:9092,
+      localhost:9093,
+      localhost:9094
   redis:
     host:
       redis://127.0.0.1:7000,
