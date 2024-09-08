@@ -38,9 +38,33 @@ public class EventControllerTest extends TestContainers {
 
     @BeforeEach
     void init() {
+        initRestClient();
+        initEventJoinData();
+    }
+
+    private void initRestClient() {
         restClient = RestClient.builder()
                 .baseUrl("http://localhost:" + port)
                 .build();
+    }
+
+    private void initEventJoinData() {
+        String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        Long memberId = 1L;
+        Long eventId = 1L;
+
+        RSet<Long> set = redissonClient.getSet(EventJoinMember.of(eventId, eventDate, memberId).getKey());
+        set.add(1L);
+    }
+
+    @AfterEach
+    void destroy() {
+        String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        Long memberId = 1L;
+        Long eventId = 1L;
+
+        RSet<Long> set = redissonClient.getSet(EventJoinMember.of(eventId, eventDate, memberId).getKey());
+        set.delete();
     }
 
     @Test
@@ -48,7 +72,7 @@ public class EventControllerTest extends TestContainers {
     void test1() {
         // given
         String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        Long memberId = 1L;
+        Long memberId = 2L;
         Long eventId = 1L;
 
         // when
@@ -71,9 +95,6 @@ public class EventControllerTest extends TestContainers {
         String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         Long memberId = 1L;
         Long eventId = 1L;
-
-        RSet<Long> set = redissonClient.getSet(EventJoinMember.of(eventId, eventDate, memberId).getKey());
-        set.add(1L);
 
         // when
         CommonResponse response = restClient.get()
