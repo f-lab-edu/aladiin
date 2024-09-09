@@ -1,7 +1,0 @@
-rootProject.name = 'aladiin'
-include 'coupon-api'
-include 'coupon-client'
-include 'coupon-consumer'
-include 'admin-api'
-include 'aladiin-core'
-
