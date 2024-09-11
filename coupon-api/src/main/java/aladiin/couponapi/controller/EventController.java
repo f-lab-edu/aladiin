@@ -2,7 +2,7 @@ package aladiin.couponapi.controller;
 
 import aladiin.core.response.CommonResponse;
 import aladiin.couponapi.kafka.EventJoinProducer;
-import aladiin.couponapi.model.dto.EventJoinDTO;
+import aladiin.core.dto.EventJoinDTO;
 import aladiin.couponapi.model.dto.EventJoinRequest;
 import aladiin.couponapi.model.dto.JoinStatusResponse;
 import aladiin.couponapi.model.enums.EventJoinStatus;

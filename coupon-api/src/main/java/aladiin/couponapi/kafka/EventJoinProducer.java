@@ -1,7 +1,7 @@
 package aladiin.couponapi.kafka;
 
 import aladiin.couponapi.config.KafkaConfigurationProperties;
-import aladiin.couponapi.model.dto.EventJoinDTO;
+import aladiin.core.dto.EventJoinDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
