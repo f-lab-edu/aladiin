@@ -7,10 +7,16 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class EventJoinMember {
-    private String key;
-    private Long value;
+
+    private String eventKey;
+    private Long memberId;
 
     public static EventJoinMember of(Long eventId, String eventDate, Long memberId) {
-        return new EventJoinMember(eventId + ":" + eventDate, memberId);
+        String eventKey = eventId + ":" + eventDate;
+        return new EventJoinMember(eventKey, memberId);
+    }
+
+    public String getKey() {
+        return eventKey + ":" + memberId;
     }
 }

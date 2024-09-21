@@ -10,7 +10,7 @@ public class EventJoinRepository {
 
     private final RedissonClient redissonClient;
 
-    public boolean findMember(String key, Long value) {
-        return redissonClient.getSet(key).contains(value);
+    public boolean findMember(String key) {
+        return redissonClient.getBucket(key).isExists();
     }
 }
