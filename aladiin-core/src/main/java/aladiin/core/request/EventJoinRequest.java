@@ -1,4 +1,4 @@
-package aladiin.couponapi.model.dto;
+package aladiin.core.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

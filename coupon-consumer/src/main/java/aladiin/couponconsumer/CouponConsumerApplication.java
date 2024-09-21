@@ -1,4 +1,4 @@
-package com.aladiin.couponconsumer;
+package aladiin.couponconsumer;
 
 
 import org.springframework.boot.SpringApplication;

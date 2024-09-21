@@ -1,4 +1,4 @@
-package com.aladiin.couponconsumer.error;
+package aladiin.couponconsumer.error;
 
 public class DuplicateJoinException extends RuntimeException {
 

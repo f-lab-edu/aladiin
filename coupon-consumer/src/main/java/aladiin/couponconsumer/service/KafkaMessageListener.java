@@ -1,7 +1,7 @@
-package com.aladiin.couponconsumer.service;
+package aladiin.couponconsumer.service;
 
-import aladiin.core.domain.entity.Coupon;
-import aladiin.core.dto.EventJoinDTO;
+import aladiin.core.domain.entity.EventJoinMember;
+import aladiin.core.request.EventJoinRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -19,9 +19,10 @@ public class KafkaMessageListener {
     private final CouponService couponService;
 
     @KafkaListener(topics = "${spring.kafka.topic}", groupId = "${spring.kafka.topic}")
-    public void eventJoinListener(@Headers MessageHeaders messageHeaders, @Payload EventJoinDTO eventJoinDTO) {
+    public void eventJoinListener(@Headers MessageHeaders messageHeaders, @Payload EventJoinRequest eventJoinRequest) {
         // 1. 메모리 중복 참여 사용자 검증
-        eventService.checkDuplicateJoin(eventJoinDTO.getMemberId(), eventJoinDTO.getEventId(), eventJoinDTO.getEventDate());
+        EventJoinMember eventJoinMember = EventJoinMember.of(eventJoinRequest.getEventId(), eventJoinRequest.getEventDate(), eventJoinRequest.getMemberId());
+        eventService.checkDuplicateJoin(eventJoinMember);
 
         // 2. 잔여 쿠폰 확인
         //  ㄴ 쿠폰 존재할 경우 skip
@@ -31,11 +32,11 @@ public class KafkaMessageListener {
         // 3. 쿠폰 발급
         //  ㄴ 메모리 쿠폰 재고 감소
         //  ㄴ RDB 쿠폰 발급 처리
-        couponService.issue(eventJoinDTO.getMemberId());
+        couponService.issue(eventJoinRequest.getMemberId());
 
         // 4. 이벤트 참여 처리
         //  ㄴ 메모리 이벤트 처리
         //  ㄴ redis 이벤트 처리
-        eventService.join(eventJoinDTO.getMemberId(), eventJoinDTO.getEventId(), eventJoinDTO.getEventDate());
+        eventService.join(eventJoinRequest.getMemberId(), eventJoinRequest.getEventId(), eventJoinRequest.getEventDate());
     }
 }

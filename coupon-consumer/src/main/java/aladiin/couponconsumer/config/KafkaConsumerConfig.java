@@ -1,4 +1,4 @@
-package com.aladiin.couponconsumer.config;
+package aladiin.couponconsumer.config;
 
 import aladiin.core.dto.EventJoinDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;

@@ -1,4 +1,4 @@
-package com.aladiin.couponconsumer.service;
+package aladiin.couponconsumer.service;
 
 import org.springframework.stereotype.Service;
 

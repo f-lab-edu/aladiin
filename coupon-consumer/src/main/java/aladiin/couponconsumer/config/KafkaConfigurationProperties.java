@@ -1,4 +1,4 @@
-package com.aladiin.couponconsumer.config;
+package aladiin.couponconsumer.config;
 
 import lombok.Getter;
 import lombok.Setter;
