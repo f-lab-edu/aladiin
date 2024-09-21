@@ -8,13 +8,14 @@ import aladiin.core.request.SignUpRequest;
 import aladiin.core.response.CommonResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.RestClient;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,29 +29,20 @@ public class CouponControllerTest extends TestContainers {
 
     @LocalServerPort
     private String port;
+    private final String host = "http://localhost:";
 
-    private RestClient restClient;
-
-    @BeforeEach
-    void init() {
-        restClient = RestClient.builder()
-                .baseUrl("http://localhost:" + port)
-                .build();
-    }
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
     @DisplayName("회원가입시 200 OK를 응답한다")
     void test1() {
         // given
         SignUpRequest signUpRequest = SignUpRequest.from("test");
+        String url = host + port + "/v1/members/signup";
 
         // when
-        HttpStatusCode responseCode = restClient.post()
-                .uri("/v1/members/signup")
-                .body(signUpRequest)
-                .retrieve()
-                .toEntity(CommonResponse.class)
-                .getStatusCode();
+        HttpStatusCode responseCode = restTemplate.postForEntity(url, signUpRequest, CommonResponse.class).getStatusCode();
 
         // then
         Assertions.assertThat(responseCode).isEqualTo(HttpStatus.OK);
@@ -65,14 +57,10 @@ public class CouponControllerTest extends TestContainers {
                 , DiscountType.RATIO.getType()
                 , 50
                 , LocalDateTime.now().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        String url = host + port + "/v1/coupons/register";
 
         // when
-        HttpStatusCode responseCode = restClient.post()
-                .uri("/v1/coupons/register")
-                .body(couponRegisterRequest)
-                .retrieve()
-                .toEntity(CommonResponse.class)
-                .getStatusCode();
+        HttpStatusCode responseCode = restTemplate.postForEntity(url, couponRegisterRequest, CommonResponse.class).getStatusCode();
 
         // then
         assertThat(responseCode).isEqualTo(HttpStatus.OK);
@@ -88,14 +76,10 @@ public class CouponControllerTest extends TestContainers {
                 , LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
                 , LocalDateTime.now().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
         );
+        String url = host + port + "/v1/events/register";
 
         // when
-        HttpStatusCode responseCode = restClient.post()
-                .uri("/v1/events/register")
-                .body(eventRegisterRequest)
-                .retrieve()
-                .toEntity(CommonResponse.class)
-                .getStatusCode();
+        HttpStatusCode responseCode = restTemplate.postForEntity(url, eventRegisterRequest, CommonResponse.class).getStatusCode();
 
         // then
         assertThat(responseCode).isEqualTo(HttpStatus.OK);

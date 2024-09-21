@@ -4,8 +4,6 @@ import aladiin.core.domain.entity.EventJoinMember;
 import aladiin.core.response.CommonResponse;
 import aladiin.couponapi.config.TestContainers;
 import aladiin.couponapi.model.enums.EventJoinStatus;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.redisson.api.RAtomicLong;
 import org.redisson.api.RBucket;
@@ -14,9 +12,9 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.RestClient;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,21 +29,21 @@ public class EventControllerTest extends TestContainers {
 
     @LocalServerPort
     private String port;
-    private RestClient restClient;
+    private final String host = "http://localhost:";
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Autowired
     private RedissonClient redissonClient;
 
     @BeforeEach
     void init() {
-        initRestClient();
         initEventJoinData();
     }
 
-    private void initRestClient() {
-        restClient = RestClient.builder()
-                .baseUrl("http://localhost:" + port)
-                .build();
+    @AfterEach
+    void destroy() {
+        destroyEventJoinData();
     }
 
     private void initEventJoinData() {
@@ -53,18 +51,17 @@ public class EventControllerTest extends TestContainers {
         Long memberId = 1L;
         Long eventId = 1L;
 
-        RSet<Long> set = redissonClient.getSet(EventJoinMember.of(eventId, eventDate, memberId).getKey());
-        set.add(1L);
+        RBucket<Object> bucket = redissonClient.getBucket(EventJoinMember.of(eventId, eventDate, memberId).getKey());
+        bucket.set(1L);
     }
 
-    @AfterEach
-    void destroy() {
+    private void destroyEventJoinData() {
         String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         Long memberId = 1L;
         Long eventId = 1L;
 
-        RSet<Long> set = redissonClient.getSet(EventJoinMember.of(eventId, eventDate, memberId).getKey());
-        set.delete();
+        RBucket<Object> bucket = redissonClient.getBucket(EventJoinMember.of(eventId, eventDate, memberId).getKey());
+        bucket.delete();
     }
 
     @Test
@@ -74,14 +71,10 @@ public class EventControllerTest extends TestContainers {
         String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         Long memberId = 2L;
         Long eventId = 1L;
+        String url = host + port + "/v1/events/" + eventId + "/status?eventdate=" + eventDate + "&memberid=" + memberId;
 
         // when
-        CommonResponse response = restClient.get()
-                .uri("/v1/events/" + eventId + "/status?eventdate=" + eventDate + "&memberid=" + memberId)
-                .retrieve()
-                .body(CommonResponse.class);
-
-        Map<String, Object> data = (Map) response.getData();
+        Map<String, Object> data = (Map) restTemplate.getForEntity(url, CommonResponse.class).getBody().getData();
         String eventJoinStatus = String.valueOf(data.get("joinStatus"));
 
         // then
@@ -95,14 +88,10 @@ public class EventControllerTest extends TestContainers {
         String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         Long memberId = 1L;
         Long eventId = 1L;
+        String url = host + port + "/v1/events/" + eventId + "/status?eventdate=" + eventDate + "&memberid=" + memberId;
 
         // when
-        CommonResponse response = restClient.get()
-                .uri("/v1/events/" + eventId + "/status?eventdate=" + eventDate + "&memberid=" + memberId)
-                .retrieve()
-                .body(CommonResponse.class);
-
-        Map<String, Object> data = (Map) response.getData();
+        Map<String, Object> data = (Map) restTemplate.getForEntity(url, CommonResponse.class).getBody().getData();
         String eventJoinStatus = String.valueOf(data.get("joinStatus"));
 
         // then
