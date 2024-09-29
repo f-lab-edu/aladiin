@@ -1,6 +1,8 @@
 package aladiin.couponconsumer.service;
 
 import aladiin.core.domain.entity.EventJoinMember;
+import aladiin.core.domain.entity.dao.EventJoinRepository;
+import aladiin.core.domain.entity.dao.EventRepository;
 import aladiin.couponconsumer.domain.EventParticipants;
 import aladiin.couponconsumer.error.DuplicateJoinException;
 import org.assertj.core.api.Assertions;
@@ -12,6 +14,8 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static org.mockito.Mockito.mock;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -26,8 +30,10 @@ public class EventServiceTest {
 
         EventParticipants eventParticipants = new EventParticipants();
         eventParticipants.addMember(eventJoinMember);
+        EventRepository mockEventRepository = mock(EventRepository.class);
+        EventJoinRepository mockEventJoinRepository = mock(EventJoinRepository.class);
 
-        eventService = new EventService(eventParticipants);
+        eventService = new EventService(eventParticipants, mockEventRepository, mockEventJoinRepository);
     }
 
     @Test

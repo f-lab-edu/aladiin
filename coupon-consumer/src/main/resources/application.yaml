@@ -2,11 +2,19 @@ spring:
   application:
     name: coupon-consumer
   kafka:
-    topic: event.join
+    topic:
+      validation-check: validation.check
+      coupon-restock: coupon.restock
+      coupon-issue: coupon.issue
+      event-join: event.join
+
     bootstrap-servers:
       localhost:9092,
       localhost:9093,
       localhost:9094
+
+coupon:
+  restock-quantity: 10
 
 server:
   port: 8083
