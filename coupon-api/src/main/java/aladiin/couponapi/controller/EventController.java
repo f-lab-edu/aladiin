@@ -1,9 +1,9 @@
 package aladiin.couponapi.controller;
 
-import aladiin.core.common.response.CommonResponse;
+import aladiin.core.response.CommonResponse;
 import aladiin.couponapi.kafka.EventJoinProducer;
-import aladiin.couponapi.model.dto.EventJoinDTO;
-import aladiin.couponapi.model.dto.EventJoinRequest;
+import aladiin.core.dto.EventJoinDTO;
+import aladiin.core.request.EventJoinRequest;
 import aladiin.couponapi.model.dto.JoinStatusResponse;
 import aladiin.couponapi.model.enums.EventJoinStatus;
 import aladiin.couponapi.service.EventService;
@@ -32,7 +32,7 @@ public class EventController {
 
     @PostMapping("/join")
     public ResponseEntity<CommonResponse> join(@Valid @RequestBody EventJoinRequest request){
-        eventJoinProducer.produce(EventJoinDTO.of(request.getUserId(), request.getEventId(), request.getEventDate()));
+        eventJoinProducer.produce(EventJoinDTO.of(request.getMemberId(), request.getEventId(), request.getEventDate()));
         return ResponseEntity.ok(CommonResponse.ofSuccess());
     }
 }

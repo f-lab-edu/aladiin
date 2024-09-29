@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: coupon-api
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  kafka:
+    topic: event.join
+    bootstrap-servers:
+      localhost:9092,
+      localhost:9093,
+      localhost:9094
+  redis:
+    host:
+      redis://127.0.0.1:7000,
+      redis://127.0.0.1:7001,
+      redis://127.0.0.1:7002
+
+server:
+  port: 8081
+

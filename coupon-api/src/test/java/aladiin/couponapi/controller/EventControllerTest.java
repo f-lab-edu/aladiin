@@ -1,85 +1,98 @@
 package aladiin.couponapi.controller;
 
-import aladiin.core.common.response.CommonResponse;
-import aladiin.core.request.CouponRegisterRequest;
-import aladiin.core.request.EventRegisterRequest;
-import aladiin.core.request.SignUpRequest;
+import aladiin.core.domain.entity.EventJoinMember;
+import aladiin.core.response.CommonResponse;
+import aladiin.couponapi.config.TestContainers;
 import aladiin.couponapi.model.enums.EventJoinStatus;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.web.client.RestClient;
+import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@RequiredArgsConstructor
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class EventControllerTest {
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class EventControllerTest extends TestContainers {
 
     @LocalServerPort
     private String port;
-    private String url = "http://localhost";
-    private RestClient restClient;
-    private String eventDate;
-    private Long couponId;
-    private Long memberId;
+    private final String host = "http://localhost:";
+    @Autowired
+    private TestRestTemplate restTemplate;
 
-    @BeforeAll
+    @Autowired
+    private RedissonClient redissonClient;
+
+    @BeforeEach
     void init() {
-        String baseUrl = url + ":" + port;
-        restClient = RestClient.builder()
-                .baseUrl(baseUrl)
-                .build();
+        initEventJoinData();
+    }
 
-        LocalDateTime today = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
-        eventDate = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String eventStartDateTime = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        String eventEndDateTime = today.plusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        couponId = 1L;
-        memberId = 1L;
+    @AfterEach
+    void destroy() {
+        destroyEventJoinData();
+    }
 
-        CommonResponse memberSignUpResponse = RestClient.builder().baseUrl(url + ":8080").build()
-                .post()
-                .uri("/v1/members/signup")
-                .body(SignUpRequest.from("testmember"))
-                .retrieve()
-                .body(CommonResponse.class);
+    private void initEventJoinData() {
+        String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        Long memberId = 1L;
+        Long eventId = 1L;
 
-        CommonResponse couponRegisterResponse = RestClient.builder().baseUrl(url + ":8080").build()
-                .post()
-                .uri("/v1/coupons/register")
-                .body(CouponRegisterRequest.of("testcoupon", "ratio", 50, eventEndDateTime))
-                .retrieve()
-                .body(CommonResponse.class);
+        RBucket<Object> bucket = redissonClient.getBucket(EventJoinMember.of(eventId, eventDate, memberId).getKey());
+        bucket.set(1L);
+    }
 
-        CommonResponse eventRegisterResponse = RestClient.builder().baseUrl(url + ":8080").build()
-                .post()
-                .uri("/v1/events/register")
-                .body(EventRegisterRequest.of(couponId, 1, eventStartDateTime, eventEndDateTime))
-                .retrieve()
-                .body(CommonResponse.class);
+    private void destroyEventJoinData() {
+        String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        Long memberId = 1L;
+        Long eventId = 1L;
+
+        RBucket<Object> bucket = redissonClient.getBucket(EventJoinMember.of(eventId, eventDate, memberId).getKey());
+        bucket.delete();
     }
 
     @Test
     @DisplayName("이벤트에 참여하지 않은 사용자가 이벤트 참여상태를 조회하면 NOT_JOINED 메시지를 응답한다")
-    void test1(){
+    void test1() {
+        // given
+        String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        Long memberId = 2L;
+        Long eventId = 1L;
+        String url = host + port + "/v1/events/" + eventId + "/status?eventdate=" + eventDate + "&memberid=" + memberId;
 
-        CommonResponse response = restClient.get()
-                .uri("/v1/events/" + couponId + "/status?eventdate=" + eventDate + "&memberid=" + memberId)
-                .retrieve()
-                .body(CommonResponse.class);
-        Map<String, Object> data = (Map) response.getData();
+        // when
+        Map<String, Object> data = (Map) restTemplate.getForEntity(url, CommonResponse.class).getBody().getData();
         String eventJoinStatus = String.valueOf(data.get("joinStatus"));
 
+        // then
         assertThat(eventJoinStatus).isEqualTo(EventJoinStatus.NOT_JOINED.toString());
     }
 
+    @Test
+    @DisplayName("이벤트에 참여한 사용자가 이벤트 참여상태를 조회하면 JOINED 메시지를 응답한다")
+    void test2() {
+        // given
+        String eventDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        Long memberId = 1L;
+        Long eventId = 1L;
+        String url = host + port + "/v1/events/" + eventId + "/status?eventdate=" + eventDate + "&memberid=" + memberId;
+
+        // when
+        Map<String, Object> data = (Map) restTemplate.getForEntity(url, CommonResponse.class).getBody().getData();
+        String eventJoinStatus = String.valueOf(data.get("joinStatus"));
+
+        // then
+        assertThat(eventJoinStatus).isEqualTo(EventJoinStatus.JOINED.toString());
+    }
 }
