@@ -10,6 +10,7 @@ import java.util.Set;
 
 @Component
 public class EventParticipants {
+
     private Map<String, Set<Long>> participants;
 
     public EventParticipants() {

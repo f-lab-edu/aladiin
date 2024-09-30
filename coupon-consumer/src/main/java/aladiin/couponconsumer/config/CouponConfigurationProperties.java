@@ -5,15 +5,10 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
-
 @Getter @Setter
 @Component
-@ConfigurationProperties(prefix = "spring.kafka")
-public class KafkaConfigurationProperties {
-    private Map<String, String> topic;
-    private List<String> bootstrapServers;
+@ConfigurationProperties(prefix = "coupon")
+public class CouponConfigurationProperties {
+
+    private int restockQuantity;
 }
-
-

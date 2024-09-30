@@ -34,7 +34,7 @@ public class IssuedCoupon extends BaseTimeEntity {
 
     private LocalDateTime useDatetime;
 
-    public static IssuedCoupon of(Member member, Event event, Coupon coupon) {
-        return new IssuedCoupon(null, member, event, coupon, null);
+    public static IssuedCoupon of(Member member, Event event) {
+        return new IssuedCoupon(null, member, event, event.getCoupon(), null);
     }
 }

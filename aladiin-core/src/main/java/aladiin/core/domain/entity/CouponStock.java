@@ -15,10 +15,11 @@ public class CouponStock {
     private int quantity;
 
     public static CouponStock of(Event event, LocalDate eventDate) {
-        String key = "event:" + event.getId()
-                + ":date:" + eventDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-                + ":coupon:stock";
-        int quantity = event.getCouponQuantity();
+        String key = event.getId() + eventDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return CouponStock.of(key, event.getCouponQuantity());
+    }
+
+    public static CouponStock of(String key, int quantity) {
         return new CouponStock(key, quantity);
     }
 }

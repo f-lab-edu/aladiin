@@ -13,4 +13,8 @@ public class EventJoinRepository {
     public boolean findMember(String key) {
         return redissonClient.getBucket(key).isExists();
     }
+
+    public void addMember(String key) {
+        redissonClient.getBucket(key).set(0);
+    }
 }

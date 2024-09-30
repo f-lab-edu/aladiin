@@ -1,13 +1,17 @@
 package aladiin.couponconsumer.service;
 
+import aladiin.core.domain.entity.IssuedCoupon;
+import aladiin.core.domain.entity.dao.IssuedCouponRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CouponService {
-    public void restock() {
-    }
 
-    public void issue(Long memberId) {
+    private final IssuedCouponRepository issuedCouponRepository;
 
+    public void issue(IssuedCoupon issuedCoupon) {
+        issuedCouponRepository.save(issuedCoupon);
     }
 }
